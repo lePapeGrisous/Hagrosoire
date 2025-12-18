@@ -34,6 +34,9 @@ class Zone
     #[ORM\ManyToOne(inversedBy: 'zones')]
     private ?Sensor $sensor = null;
 
+    #[ORM\ManyToOne(inversedBy: 'zone')]
+    private ?Meteo $meteo = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +132,18 @@ class Zone
     public function setSensor(?Sensor $sensor): static
     {
         $this->sensor = $sensor;
+
+        return $this;
+    }
+
+    public function getMeteo(): ?Meteo
+    {
+        return $this->meteo;
+    }
+
+    public function setMeteo(?Meteo $meteo): static
+    {
+        $this->meteo = $meteo;
 
         return $this;
     }
