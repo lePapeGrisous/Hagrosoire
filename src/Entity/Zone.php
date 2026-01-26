@@ -37,6 +37,15 @@ class Zone
     #[ORM\ManyToOne(inversedBy: 'zone')]
     private ?Meteo $meteo = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $seuil_bas = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $seuil_haut = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $kc = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,6 +153,42 @@ class Zone
     public function setMeteo(?Meteo $meteo): static
     {
         $this->meteo = $meteo;
+
+        return $this;
+    }
+
+    public function getSeuilBas(): ?int
+    {
+        return $this->seuil_bas;
+    }
+
+    public function setSeuilBas(?int $seuil_bas): static
+    {
+        $this->seuil_bas = $seuil_bas;
+
+        return $this;
+    }
+
+    public function getSeuilHaut(): ?int
+    {
+        return $this->seuil_haut;
+    }
+
+    public function setSeuilHaut(?int $seuil_haut): static
+    {
+        $this->seuil_haut = $seuil_haut;
+
+        return $this;
+    }
+
+    public function getKc(): ?int
+    {
+        return $this->kc;
+    }
+
+    public function setKc(?int $kc): static
+    {
+        $this->kc = $kc;
 
         return $this;
     }
