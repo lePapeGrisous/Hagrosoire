@@ -5,50 +5,20 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 {% endblock %}
-
+{% block javascripts %}
+    <script src="{{ asset('js/geolocalisation.js') }}" defer></script>
+{% endblock %}
 
 {% block body %}
 <div class="content-center bg-gray-100 min-w-screen">
     <h1 class="text-center text-4xl font-bold">Hagrosage</h1>
     <p class="text-center">Bienvenue sur votre espace d'administration d'arrosage</p>
+    <a href="{{ path('app_zone_index') }}" class="block text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Accéder à la gestion des zones</a>
 </div>
 
-<div id="map"></div>
+<div id="map" class="h-400px w-400"></div>
 
 
-<script>
-  // Initialisation par défaut (au cas où l'utilisateur refuse)
-  const map = L.map('map').setView([48.8566, 2.3522], 13);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-  }).addTo(map);
-
-  // Géolocalisation
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-
-        // Centrer la carte
-        map.setView([lat, lng], 15);
-
-        // Marqueur utilisateur
-        L.marker([lat, lng])
-          .addTo(map)
-          .bindPopup("📍 Vous êtes ici")
-          .openPopup();
-      },
-      function (error) {
-        console.error("Erreur de géolocalisation", error);
-        alert("Impossible de récupérer votre position.");
-      }
-    );
-  } else {
-    alert("La géolocalisation n'est pas supportée par ce navigateur.");
-  }
-</script>
 
 <style>
   #map {

@@ -25,8 +25,8 @@ class Zone
     #[ORM\Column(length: 255)]
     private ?int $surface = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $uniformity = null;
+    #[ORM\Column]
+    private ?float $uniformity = null;
 
     #[ORM\OneToOne(mappedBy: 'zone', cascade: ['persist', 'remove'])]
     private ?HydroliqueSum $hydroliqueSum = null;
@@ -45,6 +45,12 @@ class Zone
 
     #[ORM\Column(nullable: true)]
     private ?float $kc = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $long = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $lat = null;
 
     public function getId(): ?int
     {
@@ -99,12 +105,12 @@ class Zone
         return $this;
     }
 
-    public function getUniformity(): ?string
+    public function getUniformity(): ?float
     {
         return $this->uniformity;
     }
 
-    public function setUniformity(string $uniformity): static
+    public function setUniformity(float $uniformity): static
     {
         $this->uniformity = $uniformity;
 
@@ -189,6 +195,30 @@ class Zone
     public function setKc(?float $kc): static
     {
         $this->kc = $kc;
+
+        return $this;
+    }
+
+    public function getLong(): ?float
+    {
+        return $this->long;
+    }
+
+    public function setLong(?float $long): static
+    {
+        $this->long = $long;
+
+        return $this;
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function setLat(?float $lat): static
+    {
+        $this->lat = $lat;
 
         return $this;
     }

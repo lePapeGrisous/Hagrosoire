@@ -1,4 +1,73 @@
-{{ form_start(form, {'attr': {'data-controller': 'zone-form'}}) }}
-    {{ form_widget(form) }}
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.space_type) }}
+    {{ form_row(form.surface) }}
+    {{ form_row(form.irrigation_type) }}
+
+    <div class="mb-4">
+        <button type="button" id="geolocate-btn" class="btn btn-secondary">
+            Récupérer ma localisation
+        </button>
+        <span id="geoloc-status" class="ml-2 text-sm"></span>
+
+        <div class="mt-2">
+            {{ form_row(form.lat) }}
+        </div>
+        <div class="mt-2">
+            {{ form_row(form.long) }}
+        </div>
+    </div>
+
+    {{ form_row(form.sensor) }}
+
+    {# Champs cachés (auto-remplis) #}
+    {{ form_widget(form.kc) }}
+    {{ form_widget(form.ru) }}
+    {{ form_widget(form.seuil_bas) }}
+    {{ form_widget(form.seuil_haut) }}
+    {{ form_widget(form.uniformity) }}
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+<script>
+document.getElementById('geolocate-btn').addEventListener('click', function() {
+    const statusEl = document.getElementById('geoloc-status');
+    const latInput = document.getElementById('zone_lat');
+    const longInput = document.getElementById('zone_long');
+
+    if (!navigator.geolocation) {
+        statusEl.textContent = 'La géolocalisation n\'est pas supportée par votre navigateur.';
+        statusEl.style.color = 'red';
+        return;
+    }
+
+    statusEl.textContent = 'Récupération en cours...';
+    statusEl.style.color = 'gray';
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            latInput.value = position.coords.latitude;
+            longInput.value = position.coords.longitude;
+            statusEl.textContent = 'Localisation récupérée !';
+            statusEl.style.color = 'green';
+        },
+        function(error) {
+            let message = 'Erreur de géolocalisation';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message = 'Accès à la localisation refusé.';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = 'Position indisponible.';
+                    break;
+                case error.TIMEOUT:
+                    message = 'Délai d\'attente dépassé.';
+                    break;
+            }
+            statusEl.textContent = message;
+            statusEl.style.color = 'red';
+        }
+    );
+});
+</script>
