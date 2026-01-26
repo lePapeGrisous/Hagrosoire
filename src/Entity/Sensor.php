@@ -25,13 +25,13 @@ class Sensor
     private ?int $humidity = null;
 
     #[ORM\Column]
-    private ?int $longitude = null;
+    private ?float $longitude = null;
 
     #[ORM\Column]
-    private ?int $latitude = null;
+    private ?float $latitude = null;
 
     #[ORM\Column]
-    private ?int $batterie = null;
+    private ?float $batterie = null;
 
     #[ORM\Column]
     private ?int $temperature = null;
@@ -91,36 +91,36 @@ class Sensor
         return $this;
     }
 
-    public function getLongitude(): ?int
+    public function getLongitude(): ?float
     {
         return $this->longitude;
     }
 
-    public function setLongitude(int $longitude): static
+    public function setLongitude(float $longitude): static
     {
         $this->longitude = $longitude;
 
         return $this;
     }
 
-    public function getLatitude(): ?int
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    public function setLatitude(int $latitude): static
+    public function setLatitude(float $latitude): static
     {
         $this->latitude = $latitude;
 
         return $this;
     }
 
-    public function getBatterie(): ?int
+    public function getBatterie(): ?float
     {
         return $this->batterie;
     }
 
-    public function setBatterie(int $batterie): static
+    public function setBatterie(float $batterie): static
     {
         $this->batterie = $batterie;
 

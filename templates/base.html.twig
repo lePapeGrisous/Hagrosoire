@@ -13,6 +13,8 @@
         {% endblock %}
     </head>
     <body>
+            <a href="{{ path('app_zone_index') }}" class="block text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Accéder à la gestion des zones</a>
+            <a href="{{ path('app_sensor_index') }}" class="block text-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Accéder à la gestion des capteurs</a>
         {% block body %}{% endblock %}
     </body>
 </html>
