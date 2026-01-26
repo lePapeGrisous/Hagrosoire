@@ -44,7 +44,7 @@ class Zone
     private ?int $seuil_haut = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $kc = null;
+    private ?float $kc = null;
 
     public function getId(): ?int
     {
@@ -181,12 +181,12 @@ class Zone
         return $this;
     }
 
-    public function getKc(): ?int
+    public function getKc(): ?float
     {
         return $this->kc;
     }
 
-    public function setKc(?int $kc): static
+    public function setKc(?float $kc): static
     {
         $this->kc = $kc;
 
