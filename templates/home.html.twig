@@ -13,29 +13,164 @@
         window.zoneShowBaseUrl = "{{ path('app_zone_show', {id: '__ID__'}) }}";
     </script>
     <script src="{{ asset('js/geolocalisation.js') }}" defer></script>
+    <script src="{{ asset('js/menu.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-gray-100 flex flex-col">
-    <header class="bg-green-600 text-white py-4 px-4">
-        <h1 class="text-xl font-bold text-center">Hagrosage</h1>
-        <p class="text-sm text-center opacity-90">Gestion d'arrosage intelligent</p>
-    </header>
+<div class="min-h-screen flex flex-col md:flex-row">
 
-    <main class="flex-1 flex flex-col">
-        <div id="map" class="flex-1 h-[60vh] md:h-[70vh] w-full md:w-50vh"></div>
+    {# Sidebar Desktop #}
+    <aside class="hidden md:flex md:w-[30%] md:max-w-sm flex-col bg-gradient-to-b from-stone-800/90 to-stone-900/90 backdrop-blur-sm p-6 overflow-y-auto">
+        <h2 class="text-lg font-semibold text-amber-100 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+            </svg>
+            Navigation
+        </h2>
 
-        <div class="bg-white p-4 shadow-lg">
-            <h2 class="text-lg font-semibold mb-2">Mes zones</h2>
-            <div id="zones-list" class="space-y-2 max-h-[25vh] overflow-y-auto">
+        {# Card Zones #}
+        <a href="{{ path('app_zone_new') }}" class="group block mb-4">
+            <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl p-4 shadow-xl transform hover:scale-[1.02] transition-all duration-300 hover:shadow-emerald-500/20">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-emerald-500/30 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                    </div>
+                    <span class="text-white font-semibold">Ajouter une zone</span>
+                </div>
+                <p class="text-emerald-100/70 text-sm">Creer une nouvelle zone d'arrosage</p>
+            </div>
+        </a>
+
+        {# Card Capteurs #}
+        <a href="{{ path('app_sensor_new') }}" class="group block mb-4">
+            <div class="bg-gradient-to-br from-amber-600 to-amber-700 rounded-2xl p-4 shadow-xl transform hover:scale-[1.02] transition-all duration-300 hover:shadow-amber-500/20">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-amber-500/30 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-amber-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <span class="text-white font-semibold">Ajouter un capteur</span>
+                </div>
+                <p class="text-amber-100/70 text-sm">Configurer un nouveau capteur</p>
+            </div>
+        </a>
+
+        {# Liste des zones #}
+        <div class="mt-4">
+            <h3 class="text-sm font-medium text-stone-400 uppercase tracking-wider mb-3">Mes zones</h3>
+            <div id="zones-list-desktop" class="space-y-2 max-h-[40vh] overflow-y-auto pr-2">
                 {% if zonesJson == '[]' %}
-                    <p class="text-gray-500 text-sm">Aucune zone enregistree</p>
+                    <p class="text-stone-500 text-sm italic">Aucune zone enregistree</p>
                 {% endif %}
             </div>
-            <a href="{{ path('app_zone_new') }}" class="mt-3 block w-full bg-green-600 hover:bg-green-700 text-white text-center py-2 px-4 rounded">
-                + Ajouter une zone
+        </div>
+
+        {# Gestion links #}
+        <div class="mt-auto pt-6 border-t border-stone-700/50">
+            <a href="{{ path('app_zone_index') }}" class="flex items-center gap-2 text-stone-400 hover:text-emerald-400 transition-colors py-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                </svg>
+                Gerer les zones
+            </a>
+            <a href="{{ path('app_sensor_index') }}" class="flex items-center gap-2 text-stone-400 hover:text-amber-400 transition-colors py-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                Gerer les capteurs
             </a>
         </div>
+    </aside>
+
+    {# Carte #}
+    <main class="flex-1 relative">
+        <div id="map" class="absolute inset-0 z-0"></div>
+
+        {# Overlay effet 3D sur la carte #}
+        <div class="absolute inset-0 pointer-events-none z-10 bg-gradient-to-t from-emerald-900/20 via-transparent to-transparent"></div>
     </main>
+
+    {# Menu Burger Mobile - Bouton #}
+    <button id="mobile-menu-btn" class="md:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition-all duration-300">
+        <svg id="menu-icon-open" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg id="menu-icon-close" class="w-6 h-6 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
+    {# Menu Mobile Overlay #}
+    <div id="mobile-menu" class="md:hidden fixed inset-0 z-40 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="absolute inset-0 bg-gradient-to-br from-stone-900/98 via-emerald-900/95 to-stone-900/98 backdrop-blur-lg"></div>
+
+        <div class="relative h-full flex flex-col p-6 pt-20 overflow-y-auto">
+            <h2 class="text-xl font-bold text-white mb-6">Menu</h2>
+
+            {# Cards Mobile #}
+            <a href="{{ path('app_zone_new') }}" class="block mb-4">
+                <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl p-5 shadow-xl">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-emerald-500/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-white font-semibold text-lg">Ajouter une zone</span>
+                            <p class="text-emerald-100/70 text-sm">Nouvelle zone d'arrosage</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{{ path('app_sensor_new') }}" class="block mb-4">
+                <div class="bg-gradient-to-br from-amber-600 to-amber-700 rounded-2xl p-5 shadow-xl">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-amber-500/30 rounded-xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-amber-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-white font-semibold text-lg">Ajouter un capteur</span>
+                            <p class="text-amber-100/70 text-sm">Configurer un capteur</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            {# Liste zones mobile #}
+            <div class="mt-4">
+                <h3 class="text-sm font-medium text-stone-400 uppercase tracking-wider mb-3">Mes zones</h3>
+                <div id="zones-list-mobile" class="space-y-2 max-h-[30vh] overflow-y-auto">
+                    {% if zonesJson == '[]' %}
+                        <p class="text-stone-500 text-sm italic">Aucune zone enregistree</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Links gestion mobile #}
+            <div class="mt-auto pt-6 border-t border-stone-700/50">
+                <a href="{{ path('app_zone_index') }}" class="flex items-center gap-3 text-stone-300 hover:text-emerald-400 transition-colors py-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                    </svg>
+                    Gerer les zones
+                </a>
+                <a href="{{ path('app_sensor_index') }}" class="flex items-center gap-3 text-stone-300 hover:text-amber-400 transition-colors py-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Gerer les capteurs
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

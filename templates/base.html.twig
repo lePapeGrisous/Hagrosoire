@@ -2,9 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🌿</text></svg>">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -12,9 +13,25 @@
         {% block javascripts %}
         {% endblock %}
     </head>
-    <body>
-            <a href="{{ path('app_zone_index') }}" class="block text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Accéder à la gestion des zones</a>
-            <a href="{{ path('app_sensor_index') }}" class="block text-center bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">Accéder à la gestion des capteurs</a>
-        {% block body %}{% endblock %}
+    <body class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-amber-900 min-h-screen">
+        <header class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-emerald-900/95 to-emerald-800/95 backdrop-blur-sm shadow-lg md:relative">
+            <div class="flex items-center justify-between px-4 py-3">
+                <a href="{{ path('home') }}" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl shadow-lg flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white tracking-tight">Hagrosage</h1>
+                        <p class="text-xs text-emerald-300/80">Arrosage intelligent</p>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="pt-16 md:pt-0">
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>
