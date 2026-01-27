@@ -31,7 +31,7 @@ class HydroliqueSum
     #[ORM\Column(length: 255)]
     private ?string $decision = null;
 
-    #[ORM\OneToOne(inversedBy: 'hydroliqueSum', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'hydroliqueSums')]
     private ?Zone $zone = null;
 
     #[ORM\OneToOne(inversedBy: 'hydroliqueSum', cascade: ['persist', 'remove'])]

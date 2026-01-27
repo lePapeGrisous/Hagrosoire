@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ZoneRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
@@ -28,8 +30,11 @@ class Zone
     #[ORM\Column]
     private ?float $uniformity = null;
 
-    #[ORM\OneToOne(mappedBy: 'zone', cascade: ['persist', 'remove'])]
-    private ?HydroliqueSum $hydroliqueSum = null;
+    /**
+     * @var Collection<int, HydroliqueSum>
+     */
+    #[ORM\OneToMany(targetEntity: HydroliqueSum::class, mappedBy: 'zone', cascade: ['persist', 'remove'])]
+    private Collection $hydroliqueSums;
 
     #[ORM\ManyToOne(inversedBy: 'zones')]
     private ?Sensor $sensor = null;
@@ -51,6 +56,11 @@ class Zone
 
     #[ORM\Column(nullable: true)]
     private ?float $lat = null;
+
+    public function __construct()
+    {
+        $this->hydroliqueSums = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -117,24 +127,31 @@ class Zone
         return $this;
     }
 
-    public function getHydroliqueSum(): ?HydroliqueSum
+    /**
+     * @return Collection<int, HydroliqueSum>
+     */
+    public function getHydroliqueSums(): Collection
     {
-        return $this->hydroliqueSum;
+        return $this->hydroliqueSums;
     }
 
-    public function setHydroliqueSum(?HydroliqueSum $hydroliqueSum): static
+    public function addHydroliqueSum(HydroliqueSum $hydroliqueSum): static
     {
-        // unset the owning side of the relation if necessary
-        if ($hydroliqueSum === null && $this->hydroliqueSum !== null) {
-            $this->hydroliqueSum->setZone(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($hydroliqueSum !== null && $hydroliqueSum->getZone() !== $this) {
+        if (!$this->hydroliqueSums->contains($hydroliqueSum)) {
+            $this->hydroliqueSums->add($hydroliqueSum);
             $hydroliqueSum->setZone($this);
         }
 
-        $this->hydroliqueSum = $hydroliqueSum;
+        return $this;
+    }
+
+    public function removeHydroliqueSum(HydroliqueSum $hydroliqueSum): static
+    {
+        if ($this->hydroliqueSums->removeElement($hydroliqueSum)) {
+            if ($hydroliqueSum->getZone() === $this) {
+                $hydroliqueSum->setZone(null);
+            }
+        }
 
         return $this;
     }

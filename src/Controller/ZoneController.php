@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Meteo;
 use App\Entity\Zone;
 use App\Form\ZoneType;
+use App\Repository\HydroliqueSumRepository;
 use App\Repository\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,13 +55,19 @@ final class ZoneController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_zone_show', methods: ['GET'])]
-    public function show(Zone $zone): Response
+    public function show(Zone $zone, HydroliqueSumRepository $hydroliqueSumRepository): Response
     {
         $meteo = $this->getOrFetchMeteo($zone);
+        $bilans = $hydroliqueSumRepository->findBy(
+            ['zone' => $zone],
+            ['date' => 'DESC'],
+            10
+        );
 
         return $this->render('zone/show.html.twig', [
             'zone' => $zone,
             'meteo' => $meteo,
+            'bilans' => $bilans,
         ]);
     }
 

@@ -1,11 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Sensor{% endblock %}
+{% block title %}Nouveau Capteur{% endblock %}
 
 {% block body %}
-    <h1>Create new Sensor</h1>
+<div class="min-h-screen p-4 md:p-8">
+    <div class="max-w-2xl mx-auto">
+        {# Header #}
+        <div class="mb-6">
+            <a href="{{ path('app_sensor_index') }}" class="inline-flex items-center gap-2 text-amber-300 hover:text-amber-100 transition-colors mb-4">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Retour aux capteurs
+            </a>
+            <h1 class="text-3xl font-bold text-white">Nouveau capteur</h1>
+            <p class="text-stone-400 mt-2">Enregistrez un nouveau capteur d'humidite</p>
+        </div>
 
-    {{ include('sensor/_form.html.twig') }}
-
-    <a href="{{ path('app_sensor_index') }}">back to list</a>
+        {# Formulaire #}
+        <div class="bg-gradient-to-br from-stone-800/90 to-stone-900/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+            {{ include('sensor/_form.html.twig', {'button_label': 'Creer le capteur'}) }}
+        </div>
+    </div>
+</div>
 {% endblock %}

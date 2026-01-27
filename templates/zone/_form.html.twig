@@ -1,33 +1,120 @@
-{{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.space_type) }}
-    {{ form_row(form.surface) }}
-    {{ form_row(form.irrigation_type) }}
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
 
-    <div class="mb-4">
-        <button type="button" id="geolocate-btn" class="btn btn-secondary">
-            Récupérer ma localisation
-        </button>
-        <span id="geoloc-status" class="ml-2 text-sm"></span>
-
-        <div class="mt-2">
-            {{ form_row(form.lat) }}
+    {# Section Informations generales #}
+    <div class="space-y-4">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-emerald-600/30 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-white">Informations generales</h3>
         </div>
-        <div class="mt-2">
-            {{ form_row(form.long) }}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="{{ form.name.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Nom de la zone</label>
+                {{ form_widget(form.name, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all', 'placeholder': 'Ex: Jardin principal'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div>
+                <label for="{{ form.surface.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Surface (m²)</label>
+                {{ form_widget(form.surface, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 150'}}) }}
+                {{ form_errors(form.surface) }}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="{{ form.space_type.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Type d'espace</label>
+                {{ form_widget(form.space_type, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all'}}) }}
+                {{ form_errors(form.space_type) }}
+            </div>
+            <div>
+                <label for="{{ form.irrigation_type.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Type d'irrigation</label>
+                {{ form_widget(form.irrigation_type, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all'}}) }}
+                {{ form_errors(form.irrigation_type) }}
+            </div>
         </div>
     </div>
 
-    {{ form_row(form.sensor) }}
+    {# Section Localisation #}
+    <div class="border-t border-stone-700/50 pt-6 space-y-4">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-blue-600/30 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-white">Localisation GPS</h3>
+        </div>
 
-    {# Champs cachés (auto-remplis) #}
-    {{ form_widget(form.kc) }}
-    {{ form_widget(form.ru) }}
-    {{ form_widget(form.seuil_bas) }}
-    {{ form_widget(form.seuil_haut) }}
-    {{ form_widget(form.uniformity) }}
+        <div class="bg-stone-700/30 rounded-xl p-4">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                <button type="button" id="geolocate-btn" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Recuperer ma localisation
+                </button>
+                <span id="geoloc-status" class="text-sm text-stone-400"></span>
+            </div>
 
-    <button class="btn">{{ button_label|default('Save') }}</button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="{{ form.lat.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Latitude</label>
+                    {{ form_widget(form.lat, {'attr': {'class': 'w-full bg-stone-600/50 border border-stone-500 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 48.8566'}}) }}
+                    {{ form_errors(form.lat) }}
+                </div>
+                <div>
+                    <label for="{{ form.long.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Longitude</label>
+                    {{ form_widget(form.long, {'attr': {'class': 'w-full bg-stone-600/50 border border-stone-500 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 2.3522'}}) }}
+                    {{ form_errors(form.long) }}
+                </div>
+            </div>
+            <p class="text-xs text-stone-500 mt-2">Les coordonnees GPS permettent de recuperer automatiquement les donnees meteo</p>
+        </div>
+    </div>
+
+    {# Section Capteur #}
+    <div class="border-t border-stone-700/50 pt-6 space-y-4">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-amber-600/30 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-white">Capteur (optionnel)</h3>
+        </div>
+
+        <div>
+            <label for="{{ form.sensor.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Associer un capteur</label>
+            {{ form_widget(form.sensor, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all'}}) }}
+            {{ form_errors(form.sensor) }}
+            <p class="text-xs text-stone-500 mt-2">Liez un capteur d'humidite pour des mesures en temps reel</p>
+        </div>
+    </div>
+
+    {# Champs caches (auto-remplis par FormEvents) #}
+    <div class="hidden">
+        {{ form_widget(form.kc) }}
+        {{ form_widget(form.ru) }}
+        {{ form_widget(form.seuil_bas) }}
+        {{ form_widget(form.seuil_haut) }}
+        {{ form_widget(form.uniformity) }}
+    </div>
+
+    {# Bouton de soumission #}
+    <div class="border-t border-stone-700/50 pt-6">
+        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-6 rounded-xl font-medium transition-colors shadow-lg shadow-emerald-900/30">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}
 
 <script>
@@ -37,36 +124,36 @@ document.getElementById('geolocate-btn').addEventListener('click', function() {
     const longInput = document.getElementById('zone_long');
 
     if (!navigator.geolocation) {
-        statusEl.textContent = 'La géolocalisation n\'est pas supportée par votre navigateur.';
-        statusEl.style.color = 'red';
+        statusEl.textContent = 'La geolocalisation n\'est pas supportee par votre navigateur.';
+        statusEl.className = 'text-sm text-red-400';
         return;
     }
 
-    statusEl.textContent = 'Récupération en cours...';
-    statusEl.style.color = 'gray';
+    statusEl.textContent = 'Recuperation en cours...';
+    statusEl.className = 'text-sm text-stone-400';
 
     navigator.geolocation.getCurrentPosition(
         function(position) {
             latInput.value = position.coords.latitude;
             longInput.value = position.coords.longitude;
-            statusEl.textContent = 'Localisation récupérée !';
-            statusEl.style.color = 'green';
+            statusEl.textContent = 'Localisation recuperee !';
+            statusEl.className = 'text-sm text-emerald-400';
         },
         function(error) {
-            let message = 'Erreur de géolocalisation';
+            let message = 'Erreur de geolocalisation';
             switch(error.code) {
                 case error.PERMISSION_DENIED:
-                    message = 'Accès à la localisation refusé.';
+                    message = 'Acces a la localisation refuse.';
                     break;
                 case error.POSITION_UNAVAILABLE:
                     message = 'Position indisponible.';
                     break;
                 case error.TIMEOUT:
-                    message = 'Délai d\'attente dépassé.';
+                    message = 'Delai d\'attente depasse.';
                     break;
             }
             statusEl.textContent = message;
-            statusEl.style.color = 'red';
+            statusEl.className = 'text-sm text-red-400';
         }
     );
 });
