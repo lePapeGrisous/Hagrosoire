@@ -1,4 +1,169 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+    {# Section Informations generales #}
+    <div class="space-y-4">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-amber-600/30 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-white">Informations du capteur</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="{{ form.name.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Nom du capteur</label>
+                {{ form_widget(form.name, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all', 'placeholder': 'Ex: Capteur jardin 01'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div>
+                <label for="{{ form.date.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Date d'installation</label>
+                {{ form_widget(form.date, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all'}}) }}
+                {{ form_errors(form.date) }}
+            </div>
+        </div>
+    </div>
+
+    {# Section Mesures #}
+    <div class="border-t border-stone-700/50 pt-6 space-y-4">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-blue-600/30 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-white">Mesures actuelles</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label for="{{ form.humidity.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        Humidite (%)
+                    </span>
+                </label>
+                {{ form_widget(form.humidity, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 65'}}) }}
+                {{ form_errors(form.humidity) }}
+            </div>
+            <div>
+                <label for="{{ form.temperature.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Temperature (°C)
+                    </span>
+                </label>
+                {{ form_widget(form.temperature, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 22'}}) }}
+                {{ form_errors(form.temperature) }}
+            </div>
+            <div>
+                <label for="{{ form.batterie.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                        </svg>
+                        Batterie (%)
+                    </span>
+                </label>
+                {{ form_widget(form.batterie, {'attr': {'class': 'w-full bg-stone-700/50 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 85'}}) }}
+                {{ form_errors(form.batterie) }}
+            </div>
+        </div>
+    </div>
+
+    {# Section Localisation #}
+    <div class="border-t border-stone-700/50 pt-6 space-y-4">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-emerald-600/30 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-white">Position du capteur</h3>
+        </div>
+
+        <div class="bg-stone-700/30 rounded-xl p-4">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                <button type="button" id="sensor-geolocate-btn" class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-xl transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Recuperer ma localisation
+                </button>
+                <span id="sensor-geoloc-status" class="text-sm text-stone-400"></span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="{{ form.latitude.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Latitude</label>
+                    {{ form_widget(form.latitude, {'attr': {'class': 'w-full bg-stone-600/50 border border-stone-500 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 48.8566'}}) }}
+                    {{ form_errors(form.latitude) }}
+                </div>
+                <div>
+                    <label for="{{ form.longitude.vars.id }}" class="block text-sm font-medium text-stone-300 mb-2">Longitude</label>
+                    {{ form_widget(form.longitude, {'attr': {'class': 'w-full bg-stone-600/50 border border-stone-500 rounded-xl px-4 py-3 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all', 'placeholder': 'Ex: 2.3522'}}) }}
+                    {{ form_errors(form.longitude) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Bouton de soumission #}
+    <div class="border-t border-stone-700/50 pt-6">
+        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white py-3 px-6 rounded-xl font-medium transition-colors shadow-lg shadow-amber-900/30">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+
 {{ form_end(form) }}
+
+<script>
+document.getElementById('sensor-geolocate-btn').addEventListener('click', function() {
+    const statusEl = document.getElementById('sensor-geoloc-status');
+    const latInput = document.getElementById('sensor_latitude');
+    const longInput = document.getElementById('sensor_longitude');
+
+    if (!navigator.geolocation) {
+        statusEl.textContent = 'La geolocalisation n\'est pas supportee par votre navigateur.';
+        statusEl.className = 'text-sm text-red-400';
+        return;
+    }
+
+    statusEl.textContent = 'Recuperation en cours...';
+    statusEl.className = 'text-sm text-stone-400';
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            latInput.value = position.coords.latitude;
+            longInput.value = position.coords.longitude;
+            statusEl.textContent = 'Localisation recuperee !';
+            statusEl.className = 'text-sm text-emerald-400';
+        },
+        function(error) {
+            let message = 'Erreur de geolocalisation';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message = 'Acces a la localisation refuse.';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = 'Position indisponible.';
+                    break;
+                case error.TIMEOUT:
+                    message = 'Delai d\'attente depasse.';
+                    break;
+            }
+            statusEl.textContent = message;
+            statusEl.className = 'text-sm text-red-400';
+        }
+    );
+});
+</script>
