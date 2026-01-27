@@ -1,42 +1,165 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Zone{% endblock %}
+{% block title %}{{ zone.name }} - Zone{% endblock %}
 
 {% block body %}
-    <h1>Zone</h1>
+<div class="min-h-screen p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        {# Header #}
+        <div class="mb-6">
+            <a href="{{ path('app_zone_index') }}" class="inline-flex items-center gap-2 text-emerald-300 hover:text-emerald-100 transition-colors mb-4">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Retour aux zones
+            </a>
+            <h1 class="text-3xl font-bold text-white">{{ zone.name }}</h1>
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ zone.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ zone.name }}</td>
-            </tr>
-            <tr>
-                <th>Space_type</th>
-                <td>{{ zone.spaceType }}</td>
-            </tr>
-            <tr>
-                <th>Ru</th>
-                <td>{{ zone.ru }}</td>
-            </tr>
-            <tr>
-                <th>Surface</th>
-                <td>{{ zone.surface }}</td>
-            </tr>
-            <tr>
-                <th>Uniformity</th>
-                <td>{{ zone.uniformity }}</td>
-            </tr>
-        </tbody>
-    </table>
+        {# Grid 2 colonnes #}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {# Carte Informations Zone #}
+            <div class="bg-gradient-to-br from-stone-800/90 to-stone-900/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-emerald-600/30 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-white">Informations</h2>
+                </div>
 
-    <a href="{{ path('app_zone_index') }}">back to list</a>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                        <span class="text-stone-400">Nom</span>
+                        <span class="text-white font-medium">{{ zone.name }}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                        <span class="text-stone-400">Surface</span>
+                        <span class="text-white font-medium">{{ zone.surface }} m²</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                        <span class="text-stone-400">Type d'espace</span>
+                        <span class="text-emerald-400 font-medium">{{ zone.spaceType|replace({'_': ' '})|capitalize }}</span>
+                    </div>
+                    {% if zone.lat and zone.long %}
+                    <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                        <span class="text-stone-400">Coordonnees</span>
+                        <span class="text-white font-medium text-sm">{{ zone.lat|number_format(4) }}, {{ zone.long|number_format(4) }}</span>
+                    </div>
+                    {% endif %}
+                </div>
 
-    <a href="{{ path('app_zone_edit', {'id': zone.id}) }}">edit</a>
+                {# Actions #}
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href="{{ path('app_zone_edit', {'id': zone.id}) }}" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-xl transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Modifier
+                    </a>
+                    <form method="post" action="{{ path('app_zone_delete', {'id': zone.id}) }}" onsubmit="return confirm('Etes-vous sur de vouloir supprimer cette zone?');" class="flex-1">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ zone.id) }}">
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-red-600/80 hover:bg-red-600 text-white py-2 px-4 rounded-xl transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                            Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
 
-    {{ include('zone/_delete_form.html.twig') }}
+            {# Carte Meteo #}
+            <div class="bg-gradient-to-br from-amber-800/40 to-stone-900/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-amber-600/30 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold text-white">Meteo du jour</h2>
+                        {% if meteo %}
+                            <p class="text-xs text-stone-400">Mise a jour: {{ meteo.date|date('d/m/Y') }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if meteo %}
+                    <div class="grid grid-cols-2 gap-4">
+                        {# Temperature #}
+                        <div class="bg-stone-800/50 rounded-xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                                <span class="text-stone-400 text-sm">Temperature</span>
+                            </div>
+                            <span class="text-2xl font-bold text-white">{{ meteo.tC ?? '-' }}°C</span>
+                        </div>
+
+                        {# Ensoleillement #}
+                        <div class="bg-stone-800/50 rounded-xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                                <span class="text-stone-400 text-sm">Ensoleillement</span>
+                            </div>
+                            <span class="text-2xl font-bold text-white">{{ meteo.sunHours ?? '-' }}h</span>
+                        </div>
+
+                        {# Humidite #}
+                        <div class="bg-stone-800/50 rounded-xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                <span class="text-stone-400 text-sm">Humidite</span>
+                            </div>
+                            <span class="text-2xl font-bold text-white">{{ meteo.hrPct ?? '-' }}%</span>
+                        </div>
+
+                        {# Vent #}
+                        <div class="bg-stone-800/50 rounded-xl p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/>
+                                </svg>
+                                <span class="text-stone-400 text-sm">Vent</span>
+                            </div>
+                            <span class="text-2xl font-bold text-white">{{ meteo.wind ?? '-' }} km/h</span>
+                        </div>
+
+                        {# Probabilite pluie - pleine largeur #}
+                        <div class="col-span-2 bg-gradient-to-r from-blue-900/50 to-blue-800/30 rounded-xl p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                                    </svg>
+                                    <span class="text-stone-300">Probabilite de pluie (24h)</span>
+                                </div>
+                                <span class="text-2xl font-bold text-blue-300">{{ meteo.rainProb ?? '-' }}%</span>
+                            </div>
+                            {% if meteo.rain is not null and meteo.rain > 0 %}
+                            <p class="text-sm text-stone-400 mt-2">Cumul prevu: {{ meteo.rain }} mm</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-8">
+                        <svg class="w-16 h-16 text-stone-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                        </svg>
+                        <p class="text-stone-400">Aucune donnee meteo disponible</p>
+                        <p class="text-stone-500 text-sm mt-2">Ajoutez des coordonnees GPS a la zone pour obtenir la meteo</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

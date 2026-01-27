@@ -33,6 +33,9 @@ class Meteo
     #[ORM\Column(nullable: true)]
     private ?int $t_c = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $sun_hours = null;
+
     /**
      * @var Collection<int, Zone>
      */
@@ -117,6 +120,18 @@ class Meteo
     public function setTC(?int $t_c): static
     {
         $this->t_c = $t_c;
+
+        return $this;
+    }
+
+    public function getSunHours(): ?int
+    {
+        return $this->sun_hours;
+    }
+
+    public function setSunHours(?int $sun_hours): static
+    {
+        $this->sun_hours = $sun_hours;
 
         return $this;
     }
