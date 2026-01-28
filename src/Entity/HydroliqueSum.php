@@ -34,7 +34,7 @@ class HydroliqueSum
     #[ORM\ManyToOne(inversedBy: 'hydroliqueSums')]
     private ?Zone $zone = null;
 
-    #[ORM\OneToOne(inversedBy: 'hydroliqueSum', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'hydroliqueSums')]
     private ?Sensor $sensor = null;
 
     public function getId(): ?int

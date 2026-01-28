@@ -36,8 +36,11 @@ class Sensor
     #[ORM\Column]
     private ?int $temperature = null;
 
-    #[ORM\OneToOne(mappedBy: 'sensor', cascade: ['persist', 'remove'])]
-    private ?HydroliqueSum $hydroliqueSum = null;
+    /**
+     * @var Collection<int, HydroliqueSum>
+     */
+    #[ORM\OneToMany(targetEntity: HydroliqueSum::class, mappedBy: 'sensor', cascade: ['persist', 'remove'])]
+    private Collection $hydroliqueSums;
 
     /**
      * @var Collection<int, Zone>
@@ -47,6 +50,7 @@ class Sensor
 
     public function __construct()
     {
+        $this->hydroliqueSums = new ArrayCollection();
         $this->zones = new ArrayCollection();
     }
 
@@ -139,24 +143,31 @@ class Sensor
         return $this;
     }
 
-    public function getHydroliqueSum(): ?HydroliqueSum
+    /**
+     * @return Collection<int, HydroliqueSum>
+     */
+    public function getHydroliqueSums(): Collection
     {
-        return $this->hydroliqueSum;
+        return $this->hydroliqueSums;
     }
 
-    public function setHydroliqueSum(?HydroliqueSum $hydroliqueSum): static
+    public function addHydroliqueSum(HydroliqueSum $hydroliqueSum): static
     {
-        // unset the owning side of the relation if necessary
-        if ($hydroliqueSum === null && $this->hydroliqueSum !== null) {
-            $this->hydroliqueSum->setSensor(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($hydroliqueSum !== null && $hydroliqueSum->getSensor() !== $this) {
+        if (!$this->hydroliqueSums->contains($hydroliqueSum)) {
+            $this->hydroliqueSums->add($hydroliqueSum);
             $hydroliqueSum->setSensor($this);
         }
 
-        $this->hydroliqueSum = $hydroliqueSum;
+        return $this;
+    }
+
+    public function removeHydroliqueSum(HydroliqueSum $hydroliqueSum): static
+    {
+        if ($this->hydroliqueSums->removeElement($hydroliqueSum)) {
+            if ($hydroliqueSum->getSensor() === $this) {
+                $hydroliqueSum->setSensor(null);
+            }
+        }
 
         return $this;
     }
