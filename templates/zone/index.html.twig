@@ -1,43 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Zone index{% endblock %}
+{% block title %}Zones{% endblock %}
 
 {% block body %}
-    <h1>Zone index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Space_type</th>
-                <th>Ru</th>
-                <th>Surface</th>
-                <th>Uniformity</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="min-h-screen">
+    <h1 class="text-3xl font-bold text-white m-8">Zones</h1>
+    <div class="max-w-6xl mx-auto gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-8">
         {% for zone in zones %}
-            <tr>
-                <td>{{ zone.id }}</td>
-                <td>{{ zone.name }}</td>
-                <td>{{ zone.spaceType }}</td>
-                <td>{{ zone.ru }}</td>
-                <td>{{ zone.surface }}</td>
-                <td>{{ zone.uniformity }}</td>
-                <td>
-                    <a href="{{ path('app_zone_show', {'id': zone.id}) }}">show</a>
-                    <a href="{{ path('app_zone_edit', {'id': zone.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <div class="bg-gradient-to-br from-stone-800/90 to-stone-900/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-emerald-600/30 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-white">Informations</h2>
+                </div>
 
-    <a href="{{ path('app_zone_new') }}">Create new</a>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                        <span class="text-stone-400">Nom</span>
+                        <span class="text-white font-medium">{{ zone.name }}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                        <span class="text-stone-400">Surface</span>
+                        <span class="text-white font-medium">{{ zone.surface }} m²</span>
+                    </div>
+                    <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                        <span class="text-stone-400">Type d'espace</span>
+                        <span class="text-emerald-400 font-medium">{{ zone.spaceType|replace({'_': ' '})|capitalize }}</span>
+                    </div>
+                    {% if zone.lat and zone.long %}
+                        <div class="flex justify-between items-center py-3 border-b border-stone-700/50">
+                            <span class="text-stone-400">Coordonnees</span>
+                            <span class="text-white font-medium text-sm">{{ zone.lat|number_format(4) }}, {{ zone.long|number_format(4) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {# Actions #}
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href="{{ path('app_zone_edit', {'id': zone.id}) }}" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-xl transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Modifier
+                    </a>
+                    <form method="post" action="{{ path('app_zone_delete', {'id': zone.id}) }}" onsubmit="return confirm('Etes-vous sur de vouloir supprimer cette zone?');" class="flex-1">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ zone.id) }}">
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-red-600/80 hover:bg-red-600 text-white py-2 px-4 rounded-xl transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                            Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center text-stone-400">Aucune zone disponible. <a href="{{ path('app_zone_new') }}" class="text-emerald-400 hover:underline">Créer une nouvelle zone</a>.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

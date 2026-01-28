@@ -34,4 +34,9 @@
             {% block body %}{% endblock %}
         </div>
     </body>
+    <footer class="bg-emerald-900/50 py-2 px-4 text-center text-stone-400 text-sm flex justify-between gap-1 items-center">
+        <p>&copy; {{ "now"|date("Y") }} Hagrosage. Tous droits réservés.</p>
+        <p>Développé par Étienne Pongerard.</p>
+        <a href="{{ path('app_cgu') }}">Condition générale d'utilisation</a>
+    </footer>
 </html>

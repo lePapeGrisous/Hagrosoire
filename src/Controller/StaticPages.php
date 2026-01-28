@@ -28,4 +28,10 @@ class StaticPages extends AbstractController
 			'zonesJson' => json_encode($zonesData),
 		]);
 	}
+
+	#[Route('/cgu', name: 'app_cgu')]
+	public function cgu(): Response
+	{
+		return $this->render('cgu.html.twig');
+	}
 }
