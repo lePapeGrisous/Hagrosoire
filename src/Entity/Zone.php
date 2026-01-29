@@ -57,6 +57,9 @@ class Zone
     #[ORM\Column(nullable: true)]
     private ?float $lat = null;
 
+    #[ORM\OneToOne(mappedBy: 'zone', cascade: ['persist', 'remove'])]
+    private ?WeeklyDecision $weeklyDecision = null;
+
     public function __construct()
     {
         $this->hydroliqueSums = new ArrayCollection();
@@ -236,6 +239,28 @@ class Zone
     public function setLat(?float $lat): static
     {
         $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getWeeklyDecision(): ?WeeklyDecision
+    {
+        return $this->weeklyDecision;
+    }
+
+    public function setWeeklyDecision(?WeeklyDecision $weeklyDecision): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($weeklyDecision === null && $this->weeklyDecision !== null) {
+            $this->weeklyDecision->setZone(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($weeklyDecision !== null && $weeklyDecision->getZone() !== $this) {
+            $weeklyDecision->setZone($this);
+        }
+
+        $this->weeklyDecision = $weeklyDecision;
 
         return $this;
     }
