@@ -73,7 +73,7 @@ class ZoneType extends AbstractType
             ->add('uniformity', HiddenType::class)
             ->add('sensor', EntityType::class, [
                 'class' => Sensor::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
             ->add('lat', NumberType::class, [
                 'label' => 'Latitude',
