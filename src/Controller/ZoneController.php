@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Meteo;
+use App\Entity\WeeklyDecision;
 use App\Entity\Zone;
 use App\Form\ZoneType;
 use App\Repository\HydroliqueSumRepository;
@@ -42,7 +43,19 @@ final class ZoneController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Créer automatiquement un WeeklyDecision avec les jours à false
+            $weeklyDecision = new WeeklyDecision();
+            $weeklyDecision->setMonday(false);
+            $weeklyDecision->setTuesday(false);
+            $weeklyDecision->setWensday(false);
+            $weeklyDecision->setThursday(false);
+            $weeklyDecision->setFriday(false);
+            $weeklyDecision->setSaturday(false);
+            $weeklyDecision->setSunday(false);
+            $weeklyDecision->setZone($zone);
+
             $entityManager->persist($zone);
+            $entityManager->persist($weeklyDecision);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_zone_index', [], Response::HTTP_SEE_OTHER);

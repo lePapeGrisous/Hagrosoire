@@ -175,6 +175,113 @@
             </div>
         </div>
 
+        {# Planning d'arrosage hebdomadaire #}
+        <div class="mt-6 bg-gradient-to-br from-emerald-900/40 to-stone-900/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-emerald-600/30 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-white">Planning d'arrosage</h2>
+                    <p class="text-xs text-stone-400">Configurez les jours et horaires d'arrosage</p>
+                </div>
+            </div>
+
+            {% set wd = zone.weeklyDecision %}
+            <form method="post" action="{{ path('app_weekly_decision_update', {'id': zone.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('weekly_decision_' ~ zone.id) }}">
+
+                {# Tableau des jours #}
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-stone-700/50">
+                                <th class="text-center py-3 px-2 text-stone-400 font-medium text-sm">Lun</th>
+                                <th class="text-center py-3 px-2 text-stone-400 font-medium text-sm">Mar</th>
+                                <th class="text-center py-3 px-2 text-stone-400 font-medium text-sm">Mer</th>
+                                <th class="text-center py-3 px-2 text-stone-400 font-medium text-sm">Jeu</th>
+                                <th class="text-center py-3 px-2 text-stone-400 font-medium text-sm">Ven</th>
+                                <th class="text-center py-3 px-2 text-stone-400 font-medium text-sm">Sam</th>
+                                <th class="text-center py-3 px-2 text-stone-400 font-medium text-sm">Dim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center py-4 px-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="monday" class="sr-only peer" {{ wd and wd.monday ? 'checked' : '' }}>
+                                        <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </td>
+                                <td class="text-center py-4 px-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="tuesday" class="sr-only peer" {{ wd and wd.tuesday ? 'checked' : '' }}>
+                                        <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </td>
+                                <td class="text-center py-4 px-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="wensday" class="sr-only peer" {{ wd and wd.wensday ? 'checked' : '' }}>
+                                        <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </td>
+                                <td class="text-center py-4 px-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="thursday" class="sr-only peer" {{ wd and wd.thursday ? 'checked' : '' }}>
+                                        <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </td>
+                                <td class="text-center py-4 px-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="friday" class="sr-only peer" {{ wd and wd.friday ? 'checked' : '' }}>
+                                        <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </td>
+                                <td class="text-center py-4 px-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="saturday" class="sr-only peer" {{ wd and wd.saturday ? 'checked' : '' }}>
+                                        <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </td>
+                                <td class="text-center py-4 px-2">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="sunday" class="sr-only peer" {{ wd and wd.sunday ? 'checked' : '' }}>
+                                        <div class="w-11 h-6 bg-stone-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {# Heure et duree #}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="starting_time" class="block text-sm font-medium text-stone-400 mb-2">Heure de demarrage</label>
+                        <input type="time" name="starting_time" id="starting_time"
+                               value="{{ wd and wd.startingTime ? wd.startingTime|date('H:i') : '' }}"
+                               class="w-full bg-stone-800/50 border border-stone-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label for="spray_duration" class="block text-sm font-medium text-stone-400 mb-2">Duree d'arrosage (minutes)</label>
+                        <input type="number" name="spray_duration" id="spray_duration" min="1" max="120"
+                               value="{{ wd and wd.sprayDuration ? wd.sprayDuration : '' }}"
+                               placeholder="Ex: 30"
+                               class="w-full bg-stone-800/50 border border-stone-700 rounded-xl px-4 py-3 text-white placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <button type="submit" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-xl transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Enregistrer le planning
+                </button>
+            </form>
+        </div>
+
         {# Historique des bilans hydroliques #}
         <div class="mt-6 bg-gradient-to-br from-blue-900/40 to-stone-900/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
             <div class="flex items-center justify-between mb-6">
