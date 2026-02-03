@@ -48,16 +48,15 @@ final class HydroliqueSumController extends AbstractController
         $result = $this->hydroliqueService->calculateForZone($zone);
 
         if ($result) {
-            return $this->json([
-                'success' => true,
-                'zone' => $zone->getName(),
-                'decision' => $result->getDecision(),
-                'volume' => $result->getVolume(),
-                'stock' => $result->getStock(),
-                'etc' => $result->getEtc(),
-            ]);
+            $this->addFlash('success', sprintf(
+                'Bilan calcule : %s - Volume : %d L',
+                $result->getDecision(),
+                $result->getVolume()
+            ));
+        } else {
+            $this->addFlash('warning', 'Bilan deja existant pour aujourd\'hui.');
         }
 
-        return $this->json(['success' => false, 'message' => 'Bilan deja existant pour aujourd\'hui']);
+        return $this->redirectToRoute('app_zone_show', ['id' => $zone->getId()]);
     }
 }
